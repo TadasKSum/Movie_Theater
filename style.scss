@@ -1,0 +1,92 @@
+.container {
+  border: solid black 1px;
+  border-radius: 5px;
+  margin: 150px auto;
+  width: 400px;
+  padding: 20px;
+}
+
+h1 {
+  text-align: center;
+}
+
+h2 {
+  text-align: center;
+  margin: 0;
+}
+
+.loginBtn {
+  width: 100%;
+  background-color: #0d6efd;
+  color: white;
+  font-weight: bolder;
+  margin: 5px 0;
+  text-align: center;
+  padding: 20px;
+  box-sizing: border-box;
+  font-size: 24px;
+  cursor: pointer;
+  transition: 0.2s;
+  &:hover {
+    background-color: crimson;
+  }
+}
+
+// mainPage.html
+
+nav {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.navBar {
+  display: flex;
+  justify-content: center;
+  width: 60vw;
+  gap: 10px;
+}
+
+.navLoginStatus {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+}
+
+.logoutBtn {
+  width: 80px;
+  padding: 10px;
+  border-radius: 5px;
+  background-color: #0d6efd;
+  color: white;
+  font-weight: bolder;
+  margin: 5px 0;
+  text-align: center;
+  cursor: pointer;
+  transition: 0.2s;
+  &:hover {
+    background-color: crimson;
+  }
+}
+
+.navBtn {
+  width: 100px;
+  padding: 10px;
+  border-radius: 5px;
+  background-color: #0d6efd;
+  color: white;
+  font-weight: bolder;
+  margin: 5px 0;
+  text-align: center;
+  cursor: pointer;
+  transition: 0.2s;
+  &:hover {
+    background-color: crimson;
+  }
+}
+
+/* Hide class */
+
+.hide {
+  display: none;
+}
