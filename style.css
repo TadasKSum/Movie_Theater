@@ -32,6 +32,8 @@ h2 {
   background-color: crimson;
 }
 
+/*===== mainPage.html =====*/
+/* Navbar */
 nav {
   display: flex;
   align-items: center;
@@ -41,7 +43,7 @@ nav {
 .navBar {
   display: flex;
   justify-content: center;
-  width: 60vw;
+  width: 65vw;
   gap: 10px;
 }
 
@@ -81,6 +83,55 @@ nav {
 }
 .navBtn:hover {
   background-color: crimson;
+}
+
+/*====Main====*/
+/* Create Movie */
+.createMovie {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  margin: 20px auto;
+  padding: 20px;
+  width: 400px;
+  gap: 10px;
+}
+.createMovie input {
+  padding: 8px;
+}
+.createMovie input:focus {
+  background-color: lightblue;
+}
+
+.createMovieBtn {
+  width: 100px;
+  padding: 10px;
+  border-radius: 5px;
+  background-color: #0d6efd;
+  color: white;
+  font-weight: bolder;
+  margin: 5px 0;
+  text-align: center;
+  cursor: pointer;
+  transition: 0.2s;
+  align-self: center;
+}
+.createMovieBtn:hover {
+  background-color: crimson;
+}
+
+/* Movie List */
+.movieList {
+  margin: 20px auto;
+  box-sizing: border-box;
+}
+
+.moviesShowcase {
+  padding: 20px;
+  margin: 15px auto;
+  width: 100%;
+  border: black solid 1px;
+  box-sizing: border-box;
 }
 
 /* Hide class */
