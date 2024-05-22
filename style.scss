@@ -129,11 +129,150 @@ nav {
 }
 
 .moviesShowcase {
+  display: flex;
+  gap: 10px;
   padding: 20px;
   margin: 15px auto;
   width: 100%;
   border: black solid 1px;
   box-sizing: border-box;
+}
+
+.movie {
+  display: flex;
+  border: black solid 1px;
+  width: 25vw;
+  padding: 10px;
+  flex-direction: column;
+  img {
+    width: 100%;
+  }
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  .movieTitle {
+    font-size: 20px;
+    font-weight: bold;
+  }
+  .movieListingControlsDiv {
+    display: flex;
+    gap: 5px;
+  }
+  .movieListBtn {
+    padding: 10px;
+    border-radius: 5px;
+    background-color: #0d6efd;
+    color: white;
+    font-weight: bolder;
+    margin: 5px 0;
+    text-align: center;
+    cursor: pointer;
+    transition: 0.2s;
+    align-self: center;
+    &:hover {
+      background-color: crimson;
+    }
+  }
+}
+
+/* Target movie menu */
+
+.seatsMenu {
+  position: fixed;
+  margin-right: 20px;
+  width: 80vw;
+  height: 95vh;
+  top: 10px;
+  left: 10vw;
+  background-color: rgba(0, 0, 0, 0.9);
+  z-index: 10;
+  padding: 20px;
+  box-sizing: border-box;
+  display: flex;
+  gap: 10px;
+  h3 {
+    color: white;
+    margin: 10px 0;
+    text-align: center;
+  }
+}
+
+.confirmReservation {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.targetMovieBtn {
+  padding: 10px;
+  border-radius: 5px;
+  background-color: #0d6efd;
+  color: white;
+  font-weight: bolder;
+  margin: 5px 0;
+  text-align: center;
+  cursor: pointer;
+  transition: 0.2s;
+  &:hover {
+    background-color: crimson;
+  }
+}
+
+.seatsReserve{
+  flex: 3;
+  border: white solid 1px;
+  display: flex;
+  flex-direction: column;
+}
+
+.displaySeats {
+  flex: 8;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 5px;
+}
+
+.seat {
+  background-color: grey;
+  border-radius: 5px;
+  width: 60px;
+  height: 70px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-weight: bolder;
+  font-size: 32px;
+  cursor: pointer;
+  transition: 0.2s;
+  &:hover {
+    background-color: cornflowerblue;
+  }
+}
+
+.confirmReservation {
+  flex: 1;
+  color: white;
+}
+
+.seatsMovieImg {
+  flex: 2;
+  img {
+    height: 100%;
+    width: 100%;
+  }
+}
+
+/* Seats */
+
+.selected {
+  background-color: crimson;
+}
+
+.reserved {
+  background-color: #040436;
 }
 
 /* Hide class */

@@ -1,6 +1,7 @@
 /* ===== Module Imports ===== */
 
 import {showMovieList} from "./show.js";
+import {showTargetMovie} from "./show.js";
 
 /* ===== Bindings ===== */
 
@@ -23,13 +24,21 @@ const inputConfirmCreateMovie = document.querySelector("#inputConfirmCreateMovie
 const movieListPage = document.querySelector(".movieList")
 const movieShowcase = document.querySelector(".moviesShowcase")
 
+// Target Movie Menu
+const targetMovieDest = document.querySelector(".movieTargetDestination")
+
 /* ===== Variables ===== */
 
 // Get User Login
-const currentLogin = localStorage.getItem("userLogin")
+const currentLogin = localStorage.getItem("userLogin");
 
 // Movie List
 let moviesArray = [];
+
+// Target Movie
+let currentTargetID = "";
+let target = [];
+let targetIndex = -1;
 
 /* ===== Functions ===== */
 
@@ -52,9 +61,7 @@ function createMovie() {
     // Load movie list from local storage.
     moviesArray = JSON.parse(localStorage.getItem("movieList"))
 
-    if(moviesArray === null) {
-        moviesArray = [];
-    }
+    if(moviesArray === null) moviesArray = []; // For first load while local storage is empty
 
     // Object creation
     let newMovie = {
@@ -90,11 +97,79 @@ function createMovie() {
     localStorage.setItem("movieList", JSON.stringify(moviesArray))
 }
 
+function pageLoad() {
+    moviesArray = JSON.parse(localStorage.getItem("movieList"))
+
+    if(moviesArray === null) moviesArray = [];
+
+    showMovieList(moviesArray, movieShowcase, currentLogin)
+    hideCreateMovie()
+
+    if(currentLogin === "Admin") {
+
+    } else {
+        reserveSeatsControls()
+    }
+}
+
+/* List Controls */
+
+// Reserve Seats
+export function reserveSeatsControls() {
+    // Get bindings from showMovieList() function
+
+    const reserveButtons = document.querySelectorAll(".reserveMovieSeatsBtn")
+
+    reserveButtons.forEach((button, index) => {
+        button.onclick = (event) => {
+            // Find out target id from the button ID. Slicing off last 4 symbols to remove _res tag from id
+            currentTargetID = event.target.id.slice(0, -4)
+
+            // Load Movie List
+            moviesArray = JSON.parse(localStorage.getItem("movieList"))
+
+            // Filter out target from movie list. Store it in variable
+            target = moviesArray.filter((movie, i) => movie.movieID === currentTargetID)
+
+            // Filter out target index inside movie list array. store it in variable
+            targetIndex = moviesArray.findIndex((item, i) => item.movieID === currentTargetID)
+
+            // Open reserve seats menu. Send target into it for editing.
+
+            console.log(target[0])
+            console.log(targetIndex)
+
+            targetMovieDest.classList.remove("hide")
+            showTargetMovie(target, targetMovieDest)
+
+            // Exit Menu. Binding and function
+            const exitTargetMovieMenuBtn = document.querySelector(".closeTargetMovieMenu")
+
+            exitTargetMovieMenuBtn.onclick = () => {
+                targetMovieDest.classList.add("hide")
+            }
+
+            seatsSelection()
+        }
+    })
+}
+
+function seatsSelection() {
+    // Seats indicators binding.
+    const thisMovieSeats = document.querySelectorAll(".seat")
+
+    thisMovieSeats.forEach((seat, index) => {
+        seat.onclick = (event) => {
+            seat.classList.toggle("selected")
+        }
+    })
+}
+
 /* ===== Actions ===== */
 
 currentUser.innerHTML = `<b>${currentLogin}</b>`
 
-hideCreateMovie()
+pageLoad()
 
 logoutBtn.onclick = () => {
     localStorage.removeItem("userLogin")
@@ -126,7 +201,8 @@ movieListBtn.onclick = () => {
         moviesArray = [];
     }
 
-    showMovieList(moviesArray, movieShowcase)
+    showMovieList(moviesArray, movieShowcase, currentLogin)
+    console.log(moviesArray)
 }
 
 createMovieBtn.onclick = () => {
