@@ -109,12 +109,12 @@ function pageLoad() {
     if(moviesArray === null) moviesArray = [];
 
     showMovieList(moviesArray, movieShowcase, currentLogin)
-    hideCreateMovie()
 
     if(currentLogin === "Admin") {
         seatsControlAdmin()
     } else {
         reserveSeatsControlsUser()
+        hideCreateMovie()
     }
 }
 
