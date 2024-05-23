@@ -95,6 +95,12 @@ function createMovie() {
 
     // Save movie list in local storage
     localStorage.setItem("movieList", JSON.stringify(moviesArray))
+
+    // Clear inputs
+
+    inputMovieTitle.value = ""
+    inputMovieImage.value = ""
+    inputMovieSeats.value = ""
 }
 
 function pageLoad() {
@@ -106,16 +112,16 @@ function pageLoad() {
     hideCreateMovie()
 
     if(currentLogin === "Admin") {
-
+        seatsControlAdmin()
     } else {
-        reserveSeatsControls()
+        reserveSeatsControlsUser()
     }
 }
 
 /* List Controls */
 
-// Reserve Seats
-export function reserveSeatsControls() {
+// Reserve Seats User
+function reserveSeatsControlsUser() {
     // Get bindings from showMovieList() function
 
     const reserveButtons = document.querySelectorAll(".reserveMovieSeatsBtn")
@@ -136,11 +142,8 @@ export function reserveSeatsControls() {
 
             // Open reserve seats menu. Send target into it for editing.
 
-            console.log(target[0])
-            console.log(targetIndex)
-
             targetMovieDest.classList.remove("hide")
-            showTargetMovie(target, targetMovieDest)
+            showTargetMovie(target, targetMovieDest, currentLogin)
 
             // Exit Menu. Binding and function
             const exitTargetMovieMenuBtn = document.querySelector(".closeTargetMovieMenu")
@@ -149,20 +152,152 @@ export function reserveSeatsControls() {
                 targetMovieDest.classList.add("hide")
             }
 
-            seatsSelection()
+            seatsSelectionUser()
         }
     })
 }
 
-function seatsSelection() {
+function seatsSelectionUser() {
     // Seats indicators binding.
     const thisMovieSeats = document.querySelectorAll(".seat")
 
     thisMovieSeats.forEach((seat, index) => {
         seat.onclick = (event) => {
-            seat.classList.toggle("selected")
+            if(event.target.className.includes("reserved")) {
+
+            } else {
+                seat.classList.toggle("selected")
+            }
         }
     })
+
+    makeReservationUser()
+}
+
+function makeReservationUser() {
+    if(currentLogin === "Admin") return
+    // Bind seats.
+    const seatsForReservation = document.querySelectorAll(".seat")
+    // Bind button.
+    const userReserveSeatsBtn = document.querySelector("#userReserveSeatsBtn")
+
+    userReserveSeatsBtn.onclick = () => {
+        // Get selected seats
+        seatsForReservation.forEach((seat, index) => {
+            if(seat.className.includes("selected")) {
+                // Change reservation status
+                target[0].reservedSeats[index].reserved = true;
+                // Update movie list array
+                moviesArray[targetIndex] = target[0]
+                // Save to local storage
+                localStorage.setItem("movieList", JSON.stringify(moviesArray))
+                // Close menu
+                targetMovieDest.classList.add("hide")
+                // Reload
+                pageLoad()
+            }
+        })
+    }
+}
+
+/* Admin Controls */
+
+function seatsControlAdmin() {
+    // Get bindings
+    const adminEditSeatsBtn = document.querySelectorAll(".editMovieSeatsBtn")
+    const adminDeleteMovieBtn = document.querySelectorAll(".deleteMovieBtn")
+
+    // Add functions
+    // 1. Edit seats button
+    adminEditSeatsBtn.forEach((button, index) => {
+        button.onclick = (event) => {
+            // Find out target id from the button ID. Slicing off last 4 symbols to remove _res tag from id
+            currentTargetID = event.target.id.slice(0, -4)
+            // Load Movie List
+            moviesArray = JSON.parse(localStorage.getItem("movieList"))
+            // Filter out target from movie list. Store it in variable
+            target = moviesArray.filter((movie, i) => movie.movieID === currentTargetID)
+            // Filter out target index inside movie list array. store it in variable
+            targetIndex = moviesArray.findIndex((item, i) => item.movieID === currentTargetID)
+            // Open reserve seats menu. Send target into it for editing.
+
+            console.log(target[0])
+
+            targetMovieDest.classList.remove("hide")
+            showTargetMovie(target, targetMovieDest, currentLogin)
+
+            // Exit Menu. Binding and function
+            const exitTargetMovieMenuBtn = document.querySelector(".closeTargetMovieMenu")
+
+            exitTargetMovieMenuBtn.onclick = () => {
+                targetMovieDest.classList.add("hide")
+            }
+
+            // Call function for selecting seats
+            reservationSelectAdmin()
+        }
+    })
+
+    // 2. Delete movie button
+    adminDeleteMovieBtn.forEach((button, index) => {
+        button.onclick = (event) => {
+            // Get target
+            currentTargetID = event.target.id.slice(0, -4)
+            // Load movie list
+            moviesArray = JSON.parse(localStorage.getItem("movieList"))
+
+            if(window.confirm("Do you really want to delete this movie?")) {
+                console.log("Movie Deleted")
+                // Filter out the selected movie
+                moviesArray = moviesArray.filter((movie, i) => movie.movieID !== currentTargetID)
+                // Save movie list in local storage
+                localStorage.setItem("movieList", JSON.stringify(moviesArray))
+                pageLoad()
+            } else {
+                console.log("Deletion canceled")
+            }
+        }
+    })
+}
+
+function reservationSelectAdmin() {
+    // Bind Seats
+    const thisMovieSeats = document.querySelectorAll(".seat")
+
+    // Seats selection
+    thisMovieSeats.forEach((seat, index) => {
+        seat.onclick = (event) => {
+            if(event.target.className.includes("reserved")) {
+                seat.classList.toggle("selected")
+            }
+        }
+    })
+    // Call remove function
+    reservationRemoveAdmin()
+}
+
+function reservationRemoveAdmin() {
+    // Bind seats
+    const reservedSeatsSelectionAdmin = document.querySelectorAll(".seat")
+    // Bind button
+    const adminRemoveReservationBtn = document.querySelector("#adminReserveSeatsBtn")
+
+    adminRemoveReservationBtn.onclick = () => {
+        reservedSeatsSelectionAdmin.forEach((seat, index) => {
+            if(seat.className.includes("selected")) {
+                // Change reservation status
+                target[0].reservedSeats[index].reserved = false;
+                // Update movie list array
+                moviesArray[targetIndex] = target[0]
+                // Save to local storage
+                localStorage.setItem("movieList", JSON.stringify(moviesArray))
+                // Close menu
+                targetMovieDest.classList.add("hide")
+                // Reload
+                pageLoad()
+            }
+        })
+    }
 }
 
 /* ===== Actions ===== */

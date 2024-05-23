@@ -12,6 +12,8 @@ export function showMovieList(array, htmlDestination, login) {
             })
 
             // Movie div creation
+            // Buttons have IDs that are same as movie ids with addition of 4 symbols (so each id is unique)
+            // Last four symbols are removed when clicking on button and getting target ID, so then you get movie ID to use in filtering
             const el = document.createElement("div")
             el.classList.add("movie")
             el.innerHTML = `
@@ -19,8 +21,8 @@ export function showMovieList(array, htmlDestination, login) {
             <div class="movieTitle">"${movie.title}"</div>
             <div>Seats: ${filledSeats}/${movie.seats}</div>
             <div class="movieListingControlsDiv">
-                <div class="movieListBtn editMovieSeatsBtn">Edit Seats</div>
-                <div class="movieListBtn deleteMovieBtn">Delete Movie</div>
+                <div class="movieListBtn editMovieSeatsBtn" id="${movie.movieID}_edi">Edit Seats</div>
+                <div class="movieListBtn deleteMovieBtn" id="${movie.movieID}_del">Delete Movie</div>
             </div>
             `
             htmlDestination.append(el)
@@ -51,9 +53,12 @@ export function showMovieList(array, htmlDestination, login) {
 export function showTargetMovie(array, htmlDestination, login) {
     htmlDestination.innerHTML = "";
 
-    const el = document.createElement("div")
-    el.classList.add("seatsMenu")
-    el.innerHTML = `
+    // Append for normal user
+
+    if(login === "User") {
+        const el = document.createElement("div")
+        el.classList.add("seatsMenu")
+        el.innerHTML = `
         <div class="seatsMovieImg">
             <img src="${array[0].image}" alt="${array[0].title}">
         </div>
@@ -61,13 +66,31 @@ export function showTargetMovie(array, htmlDestination, login) {
             <h3>"${array[0].title}"</h3>
             <div class="displaySeats"></div>
             <div class="confirmReservation">
-                <div class="targetMovieBtn">Reserve</div>
+                <div class="targetMovieBtn" id="userReserveSeatsBtn">Reserve</div>
+                <div class="targetMovieBtn closeTargetMovieMenu">Exit</div>
+            </div>
+        </div>
+        `
+        htmlDestination.append(el)
+    } else {
+        const el = document.createElement("div")
+        el.classList.add("seatsMenu")
+        el.innerHTML = `
+        <div class="seatsMovieImg">
+            <img src="${array[0].image}" alt="${array[0].title}">
+        </div>
+        <div class="seatsReserve">
+            <h3>"${array[0].title}"</h3>
+            <div class="displaySeats"></div>
+            <div class="confirmReservation">
+                <div class="targetMovieBtn" id="adminReserveSeatsBtn">Remove Reservation</div>
                 <div class="targetMovieBtn closeTargetMovieMenu">Exit</div>
             </div>
         </div>
     `
+        htmlDestination.append(el)
+    }
 
-    htmlDestination.append(el)
 
     const displaySeats = document.querySelector(".displaySeats")
 

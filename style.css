@@ -263,12 +263,12 @@ nav {
 }
 
 /* Seats */
-.selected {
-  background-color: crimson;
-}
-
 .reserved {
   background-color: #040436;
+}
+
+.selected {
+  background-color: crimson;
 }
 
 /* Hide class */
